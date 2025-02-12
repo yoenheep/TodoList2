@@ -67,7 +67,7 @@
 }
 #List .listLi {
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: center;
   border-bottom: 2px solid rgba(255, 192, 203, 0.5);
   font-size: 18px;
@@ -75,12 +75,32 @@
 #List .checkBox {
   width: 20px;
   height: 20px;
-  accent-color: lightpink;
+  accent-color: rgb(255, 155, 170);
+}
+
+#List .listSpan {
+  width: 240px;
+  word-wrap: break-word;
+  line-height: 1.5;
 }
 
 #List .delBtn {
-  width: 20px;
-  height: 20px;
+  width: 21px;
   border: none;
-  background-color: lightpink;
+  font-size: 16px;
+  background-color: rgb(255, 155, 170);
+}
+
+.listSpan .reInput {
+  height: 14px;
+  padding: 5px;
+  font-size: 15px;
+}
+.listSpan .reBtn {
+  width: 25px;
+  height: 25px;
+  border: none;
+  background-color: rgb(255, 155, 170);
+  margin-left: 5px;
+  font-size: 16px;
 }
