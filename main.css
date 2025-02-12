@@ -1,0 +1,86 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+#all {
+  margin: 0 auto;
+  padding: 50px;
+  border: 2px solid rgb(255, 214, 221);
+  background-color: rgb(255, 214, 221);
+  width: 600px;
+  text-align: center;
+}
+
+/*title*/
+#title {
+  margin: 20px;
+}
+
+#title h1 {
+  padding: 15px;
+}
+
+#title #today {
+  width: 100%;
+}
+
+#title #todayP {
+  font-size: 19px;
+  line-height: 60px;
+}
+
+#title img {
+  width: 40px;
+  padding-left: 10px;
+  top: 50%;
+  transform: translateY(25%);
+}
+
+#Input {
+  width: 100%;
+}
+#input #addText {
+  width: 50%;
+  height: 20px;
+  padding: 5px;
+  border: none;
+}
+#input #addBtn {
+  border: none;
+  height: 30px;
+  width: 30px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/*content*/
+#content {
+  background-color: white;
+  margin: 20px;
+  padding: 20px;
+  line-height: 4;
+}
+
+#List #ulList {
+  list-style: none;
+}
+#List .listLi {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  border-bottom: 2px solid rgba(255, 192, 203, 0.5);
+  font-size: 18px;
+}
+#List .checkBox {
+  width: 20px;
+  height: 20px;
+  accent-color: lightpink;
+}
+
+#List .delBtn {
+  width: 20px;
+  height: 20px;
+  border: none;
+  background-color: lightpink;
+}
