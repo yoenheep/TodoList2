@@ -32,7 +32,10 @@ $(document).ready(function () {
   });
 
   $(document).on("click", ".delBtn", function () {
+    let index = $(this).parent().index();
+    todos.splice(index, 1);
     $(this).parent().remove();
+    console.log(todos);
   });
 
   $(document).on("dblclick", ".listSpan", function () {
@@ -51,12 +54,15 @@ $(document).ready(function () {
 
   $(document).on("click", ".reBtn", function () {
     let reText = $(".reInput").val();
+    let index = $(this).parent().parent().index();
 
     if (reText == "") {
       alert("수정문구작성");
     } else {
+      todos[index].content = reText;
       $(this).parent().text(reText);
       $(this).parent().empty();
+      console.log(todos);
     }
   });
 
