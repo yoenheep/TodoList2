@@ -46,7 +46,7 @@ $(document).ready(function () {
   $(document).on("dblclick", ".listSpan", function () {
     if ($(this).find("input").length === 0) {
       let reInput = $(`<input type ="text" class = "reInput"/>`);
-      let reBtn = $(`<button class="reBtn">수정</button>`);
+      let reBtn = $(`<button class="reBtn">✏</button>`);
 
       let nowText = $(this).text();
       $(this).text("");
