@@ -27,6 +27,7 @@
 #title h1 {
   padding: 15px;
   font-size: 40px;
+  font-weight: 500;
 }
 
 #title #today {
@@ -43,7 +44,7 @@
 }
 
 #now {
-  width: 110px;
+  width: 115px;
 }
 
 #today div {
