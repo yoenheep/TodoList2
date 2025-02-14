@@ -32,7 +32,7 @@
 #title #today {
   width: 100%;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: center;
 }
 
@@ -40,6 +40,10 @@
 #now,
 #todayWeather {
   font-size: 28px;
+}
+
+#now {
+  width: 110px;
 }
 
 #today div {
