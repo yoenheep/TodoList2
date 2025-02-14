@@ -1,15 +1,9 @@
 $(document).ready(function () {
   $("#todayP").text(getToday());
 
-  // 객체 받는 곳
-  const todos = [];
-
   // 스토리지 내용 todos로 받기
-  for (let i = 0; i < localStorage.length; i++) {
-    let key = localStorage.key(i);
-    let data = JSON.parse(localStorage.getItem(key));
-    todos.push(data);
-  }
+  const todos = JSON.parse(localStorage.getItem("todos")) || [];
+  localStorage.setItem("todos", JSON.stringify(todos)); // 빈 배열 초기화
 
   // todos 출력
   todos.forEach((i) => {
@@ -19,46 +13,36 @@ $(document).ready(function () {
 
   // 더하기 버튼을 눌렀을 때
   $("#addBtn").click(function () {
-    if ($("#addText").val() != "") {
-      let newContent = $("#addText").val(); // 내용
-      let object = {
-        check: false,
-        content: newContent,
-        date: getToday(),
-      };
+    addArray();
+  });
 
-      // content를 key로 사용
-      localStorage.setItem(newContent, JSON.stringify(object)); // 객체를 저장
-
-      todos.push(object); // 배열에도 추가
-      addTodo(false, newContent, getToday()); // 추가 함수 호출
-      console.log(todos);
-    } else {
-      alert("문구 작성");
+  $("#addText").on("keydown", function (event) {
+    if (event.key === "Enter") {
+      event.preventDefault(); // 기본 동작 방지
+      $("#addBtn").click(); // 버튼 클릭 이벤트 실행
     }
   });
 
+  // 체크박스 눌렀을 때
   $(document).on("click", ".checkBox", function () {
     let index = $(this).parent().index();
     todos[index].check = $(this).is(":checked");
 
-    let key = todos[index].content;
-    let checkData = JSON.parse(localStorage.getItem(key));
-    checkData.check = $(this).is(":checked");
-    localStorage.setItem(key, JSON.stringify(checkData));
+    localStorage.setItem("todos", JSON.stringify(todos));
 
     check();
   });
 
+  // 삭제버튼 눌렀을 때
   $(document).on("click", ".delBtn", function () {
     let index = $(this).parent().index();
-    let key = todos[index].content; // content를 key로 사용
-    localStorage.removeItem(key); // 해당 항목 삭제
     todos.splice(index, 1); // 배열에서 항목 제거
     $(this).parent().remove(); // 화면에서 항목 제거
+    localStorage.setItem("todos", JSON.stringify(todos));
     console.log(todos);
   });
 
+  // 더블클릭 했을 때
   $(document).on("dblclick", ".listSpan", function () {
     if ($(this).find("input").length === 0) {
       let reInput = $(`<input type ="text" class = "reInput"/>`);
@@ -73,31 +57,25 @@ $(document).ready(function () {
     }
   });
 
+  // 수정 버튼 눌렀을 때
   $(document).on("click", ".reBtn", function () {
     let reText = $(".reInput").val(); // 수정된 텍스트
-    let oldKey = $(this).siblings(".listSpan").text(); // 수정 전 텍스트가 저장된 key
 
     if (reText == "") {
       alert("수정문구 작성");
     } else {
-      // oldKey를 기준으로 로컬 스토리지에서 해당 데이터를 찾아 수정
-      let contentData = JSON.parse(localStorage.getItem(oldKey));
-
-      // 새로운 content와 함께 key를 업데이트
-      contentData.content = reText;
-      localStorage.removeItem(oldKey); // 이전 key 삭제
-      localStorage.setItem(reText, JSON.stringify(contentData)); // 새로운 key로 저장
-
       // todos 배열에서도 해당 항목을 수정
-      let index = todos.findIndex((todo) => todo.content === oldKey);
+      let index = $(this).parent().parent().index();
       todos[index].content = reText;
 
       $(this).parent().text(reText); // 화면에서 텍스트 수정
       $(this).parent().empty();
+      localStorage.setItem("todos", JSON.stringify(todos));
       console.log(todos);
     }
   });
 
+  // 날짜받기
   function getToday() {
     let date = new Date();
     return (
@@ -109,6 +87,20 @@ $(document).ready(function () {
     );
   }
 
+  //시간받기
+  function getNow() {
+    let date = new Date();
+    let hours = date.getHours();
+    let minutes = ("0" + date.getMinutes()).slice(-2);
+    let seconds = ("0" + date.getSeconds()).slice(-2);
+    $("#now").text(`${hours} : ${minutes} : ${seconds}`);
+  }
+
+  setInterval(() => {
+    getNow();
+  }, 1000);
+
+  // html 생성 함수
   function addTodo(check, content, date) {
     let checkBox = $(`<input type="checkbox" class="checkBox" />`);
     let newLi = $(`<li class="listLi"></li>`);
@@ -126,6 +118,36 @@ $(document).ready(function () {
     $("#addText").val("");
   }
 
+  // add 배열 추가
+  function addArray() {
+    let newContent = $("#addText").val().trim(); // 입력값 앞뒤 공백 제거
+
+    if (newContent === "") {
+      alert("문구를 작성하세요.");
+      return;
+    }
+
+    // todos 배열에서 중복 체크
+    let isDuplicate = todos.some((todo) => todo.content === newContent);
+
+    if (isDuplicate) {
+      alert("같은 할 일이 이미 존재합니다.");
+      return;
+    }
+
+    let object = {
+      check: false,
+      content: newContent,
+      date: getToday(),
+    };
+    // 로컬 스토리지 및 배열에 추가
+    todos.push(object);
+    localStorage.setItem("todos", JSON.stringify(todos));
+    addTodo(false, newContent, getToday());
+    console.log(todos);
+  }
+
+  // 체크박스 변화 함수
   function check() {
     // 클릭된 체크박스를 기준으로 스타일을 적용
     $(".checkBox").each(function () {
@@ -138,4 +160,44 @@ $(document).ready(function () {
       }
     });
   }
+
+  /* 날씨 API */
+  const API_KEY = "8bae7c1d7875e2c7ecf2c801c7799338";
+
+  function success(position) {
+    const lat = position.coords.latitude;
+    const lng = position.coords.longitude;
+    const url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${API_KEY}&units=metric`;
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        let sky = data.weather[0].main;
+        let skyIcon = data.weather[0].icon;
+        let imageurl = `https://openweathermap.org/img/wn/${skyIcon}@2x.png`;
+        switch (sky) {
+          case "Clear":
+            $("#todayWeather").text("맑음");
+            break;
+          case "Wind":
+            $("#todayWeather").text("바람");
+            break;
+          case "Clouds":
+            $("#todayWeather").text("구름");
+            break;
+          case "Rain":
+            $("#todayWeather").text("비");
+            break;
+          case "Snow":
+            $("#todayWeather").text("눈");
+            break;
+        }
+        $("#todayImg").attr("src", imageurl);
+      });
+  }
+
+  function fail() {
+    alert("날씨를 알 수 없음");
+  }
+
+  navigator.geolocation.getCurrentPosition(success, fail);
 });
