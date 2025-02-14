@@ -4,18 +4,30 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>투두 제이쿼리ver</title>
-    <script src="https://code.jquery.com/jquery-3.6.3.js"></script>
+    <!-- jQuery 라이브러리 -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- jQuery UI 라이브러리 -->
+    <link
+      rel="stylesheet"
+      href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+    />
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
     <script defer src="main.js"></script>
     <link rel="stylesheet" href="main.css" />
   </head>
   <body>
     <div id="all">
       <div id="title">
-        <h1>✏투두리스트 그 두번째✏</h1>
         <div id="today">
-          <span id="todayP"><!--현재 날씨, 날짜--></span>
-          <img src="img/base.png" id="todayImg" />
+          <span id="todayP"><!--현재 날짜--></span>
+          <spn id="now">Loading...</spn>
+          <div>
+            <img src="img/base.png" id="todayImg" />
+            <span id="todayWeather"></span>
+          </div>
         </div>
+        <h1>✏ 투두리스트 그 두번째 ✏</h1>
         <div id="input">
           <input type="text" id="addText" />
           <button id="addBtn">+</button>
